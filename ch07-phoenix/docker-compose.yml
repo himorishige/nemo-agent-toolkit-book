@@ -1,0 +1,23 @@
+services:
+  phoenix:
+    image: arizephoenix/phoenix:14.8.0
+    ports:
+      # 読者の手元で他に 6006/4317 を使っている場合は左側の数字を変更してください
+      # 例: '16006:6006' にすると http://localhost:16006 で UI にアクセス
+      - '6006:6006'
+      - '4317:4317'
+
+  nat:
+    image: nat-nim-handson:1.6.0
+    env_file:
+      - .env
+    volumes:
+      - ./workflow.yml:/app/workflows/workflow.yml:ro
+    command:
+      - 'run'
+      - '--config_file'
+      - '/app/workflows/workflow.yml'
+      - '--input'
+      - 'Who is the current CEO of NVIDIA, and what date is it today?'
+    depends_on:
+      - phoenix
