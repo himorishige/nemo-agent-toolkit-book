@@ -1,0 +1,29 @@
+services:
+  nat-server:
+    image: nat-nim-handson:1.6.0
+    env_file:
+      - .env
+    ports:
+      - '9901:9901'
+    volumes:
+      - ./workflow.yml:/app/workflows/workflow.yml:ro
+    command:
+      - 'mcp'
+      - 'serve'
+      - '--config_file'
+      - '/app/workflows/workflow.yml'
+      - '--host'
+      - '0.0.0.0'
+      - '--port'
+      - '9901'
+
+  nat-client:
+    image: nat-nim-handson:1.6.0
+    env_file:
+      - .env
+    volumes:
+      - ./workflow.yml:/app/workflows/workflow.yml:ro
+    profiles: ['client']
+    entrypoint: ['nat', 'mcp', 'client']
+    depends_on:
+      - nat-server
