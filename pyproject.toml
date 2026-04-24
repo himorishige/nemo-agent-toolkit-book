@@ -18,7 +18,10 @@ extend-exclude = [
 # B: flake8-bugbear / SIM: flake8-simplify / RUF: Ruff 固有
 select = ["E", "W", "F", "I", "UP", "B", "SIM", "RUF"]
 ignore = [
-    "E501",  # line too long (formatter が整形してくれるのに任せる)
+    "E501",    # line too long (formatter が整形してくれるのに任せる)
+    "RUF001",  # ambiguous unicode char in strings（日本語コメント/文字列を許容）
+    "RUF002",  # ambiguous unicode char in docstrings（日本語 docstring を許容）
+    "RUF003",  # ambiguous unicode char in comments
 ]
 
 [tool.ruff.format]
