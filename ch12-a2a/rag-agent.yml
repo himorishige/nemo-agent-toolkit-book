@@ -1,0 +1,51 @@
+# A2A サーバー側: NAT docs RAG を公開する ReAct エージェント.
+# 他の agent / client から `http://agent-nat-docs:10001` 経由で呼び出せる.
+
+general:
+  use_uvloop: true
+  front_end:
+    _type: a2a
+    name: NAT Docs Agent
+    description: >
+      NVIDIA NeMo Agent Toolkit のドキュメントを検索して回答する専門エージェント.
+      NAT の機能・YAML 設定・MCP / A2A / evaluator・retriever 等に関する質問に強い.
+    host: 0.0.0.0
+    port: 10001
+
+llms:
+  nim_llm:
+    _type: nim
+    model_name: meta/llama-3.1-8b-instruct
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+embedders:
+  nim_embed:
+    _type: nim
+    model_name: nvidia/nv-embedqa-e5-v5
+    api_key: ${NGC_API_KEY}
+
+retrievers:
+  nat_docs_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 3
+    description: Search the NVIDIA NeMo Agent Toolkit documentation.
+
+functions:
+  search_nat_docs:
+    _type: nat_retriever
+    retriever: nat_docs_retriever
+    topic: 'NeMo Agent Toolkit 公式ドキュメント'
+
+workflow:
+  _type: react_agent
+  llm_name: nim_llm
+  tool_names: [search_nat_docs]
+  verbose: true
+  max_iterations: 5
+  parse_agent_response_max_retries: 5

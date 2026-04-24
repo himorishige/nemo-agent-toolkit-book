@@ -1,0 +1,32 @@
+# A2A クライアント側: 別コンテナで動いている NAT docs Agent を tool として使う.
+# per_user_react_agent を使わないと a2a_client function group を tool_names に入れられない.
+
+general:
+  use_uvloop: true
+
+llms:
+  nim_llm:
+    _type: nim
+    model_name: meta/llama-3.1-8b-instruct
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+function_groups:
+  nat_docs_a2a:
+    _type: a2a_client
+    url: http://agent-nat-docs:10001
+    task_timeout: 60
+
+functions:
+  wiki_lookup:
+    _type: wiki_search
+    max_results: 2
+
+workflow:
+  _type: per_user_react_agent
+  llm_name: nim_llm
+  tool_names: [nat_docs_a2a, wiki_lookup]
+  verbose: true
+  max_iterations: 6
+  parse_agent_response_max_retries: 5

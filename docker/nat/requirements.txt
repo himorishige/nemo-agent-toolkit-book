@@ -1,6 +1,6 @@
 # NeMo Agent Toolkit 1.6.0（本書の基準バージョン）
 # LangChain / MCP / eval / Phoenix の extras で langchain-nvidia-ai-endpoints 等は自動解決
-nvidia-nat[langchain,mcp,eval,phoenix]==1.6.0
+nvidia-nat[langchain,mcp,eval,phoenix,a2a]==1.6.0
 
 # 第 9 章以降の RAG で Milvus Lite（ファイル DB）を使う
 # milvus_lite が `pkg_resources` を参照するため、setuptools は 80 未満に固定
