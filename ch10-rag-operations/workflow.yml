@@ -1,0 +1,76 @@
+general:
+  use_uvloop: true
+
+llms:
+  nim_llm:
+    _type: nim
+    model_name: meta/llama-3.1-8b-instruct
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+embedders:
+  nim_embed:
+    _type: nim
+    model_name: nvidia/nv-embedqa-e5-v5
+    api_key: ${NGC_API_KEY}
+
+retrievers:
+  # 1. 全体検索（章 9 と同じ top_k=3）
+  nat_docs_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 3
+    description: Search the full NVIDIA NeMo Agent Toolkit documentation.
+
+  # 2. get-started カテゴリだけに絞った retriever
+  nat_getstarted_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 3
+    search_params:
+      filter: "category == 'get-started'"
+    description: Search only the NAT get-started / installation / quick-start docs.
+
+  # 3. top_k を増やした retriever（情報量重視）
+  nat_docs_wide_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 8
+    description: Search the full NAT docs and return the top 8 matches.
+
+functions:
+  search_nat_docs:
+    _type: nat_retriever
+    retriever: nat_docs_retriever
+    topic: 'NeMo Agent Toolkit 公式ドキュメント（全体）'
+
+  search_getstarted:
+    _type: nat_retriever
+    retriever: nat_getstarted_retriever
+    topic: 'NAT の入門ドキュメント（get-started カテゴリのみ）'
+
+  search_wide:
+    _type: nat_retriever
+    retriever: nat_docs_wide_retriever
+    topic: 'NAT 公式ドキュメント（top_k=8、長尺の Observation を許容する調査用）'
+
+workflow:
+  _type: react_agent
+  tool_names:
+    - search_nat_docs
+    - search_getstarted
+    - search_wide
+  llm_name: nim_llm
+  verbose: true
+  max_iterations: 8
+  parse_agent_response_max_retries: 5
