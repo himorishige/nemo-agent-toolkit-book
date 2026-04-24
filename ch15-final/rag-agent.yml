@@ -1,0 +1,51 @@
+# 最終アプリのサブエージェント 1: NAT docs RAG を A2A で公開
+# agent-nat-docs として別コンテナで動く
+
+general:
+  use_uvloop: true
+  front_end:
+    _type: a2a
+    name: NAT Docs Agent
+    description: >
+      NVIDIA NeMo Agent Toolkit の公式ドキュメントを検索して答える専門エージェント.
+      NAT / NIM / MCP / A2A / evaluator / retriever の使い方に詳しい.
+    host: 0.0.0.0
+    port: 10001
+
+llms:
+  nim_llm:
+    _type: nim
+    model_name: nvidia/llama-3.3-nemotron-super-49b-v1
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+embedders:
+  nim_embed:
+    _type: nim
+    model_name: nvidia/nv-embedqa-e5-v5
+    api_key: ${NGC_API_KEY}
+
+retrievers:
+  nat_docs_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 3
+    description: Search the NVIDIA NeMo Agent Toolkit documentation.
+
+functions:
+  search_nat_docs:
+    _type: nat_retriever
+    retriever: nat_docs_retriever
+    topic: 'NeMo Agent Toolkit 公式ドキュメント'
+
+workflow:
+  _type: react_agent
+  llm_name: nim_llm
+  tool_names: [search_nat_docs]
+  verbose: true
+  max_iterations: 5
+  parse_agent_response_max_retries: 5

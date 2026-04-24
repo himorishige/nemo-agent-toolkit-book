@@ -1,0 +1,46 @@
+# 最終アプリのフロント: Router が A2A サブエージェント + 組み込み tools に振り分ける
+# ch11 の教訓: サブ ReAct を直接 branches に入れるとスキーマ不一致
+# ch12 の解: A2A 経由なら型変換が公式で入る → function_groups.a2a_client 経由で branches に入れる
+
+general:
+  use_uvloop: true
+  telemetry:
+    tracing:
+      phoenix:
+        _type: phoenix
+        endpoint: http://phoenix:6006/v1/traces
+        project: nat-handson-ch15
+
+llms:
+  nim_llm:
+    _type: nim
+    model_name: nvidia/llama-3.3-nemotron-super-49b-v1
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+function_groups:
+  # A2A 経由で NAT docs RAG エージェントを取り込む
+  nat_docs_a2a:
+    _type: a2a_client
+    url: http://agent-nat-docs:10001
+    task_timeout: 90
+
+functions:
+  wiki_lookup:
+    _type: wiki_search
+    max_results: 2
+
+  current_datetime:
+    _type: current_datetime
+
+# Router が全体の入口. FastAPI 化して読者は /v1/chat で叩く
+workflow:
+  _type: router_agent
+  llm_name: nim_llm
+  branches:
+    - nat_docs_a2a
+    - wiki_lookup
+    - current_datetime
+  detailed_logs: true
+  max_router_retries: 3
