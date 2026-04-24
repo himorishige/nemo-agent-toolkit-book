@@ -1,0 +1,38 @@
+x-nat-common: &nat-common
+  image: nat-nim-handson:1.6.0
+  env_file:
+    - .env
+
+services:
+  nat-react:
+    <<: *nat-common
+    volumes:
+      - ./workflow-react.yml:/app/workflows/workflow.yml:ro
+    command:
+      - 'run'
+      - '--config_file'
+      - '/app/workflows/workflow.yml'
+      - '--input'
+      - 'Who is the current CEO of NVIDIA, and what date is it today?'
+
+  nat-rewoo:
+    <<: *nat-common
+    volumes:
+      - ./workflow-rewoo.yml:/app/workflows/workflow.yml:ro
+    command:
+      - 'run'
+      - '--config_file'
+      - '/app/workflows/workflow.yml'
+      - '--input'
+      - 'Who is the current CEO of NVIDIA, and what date is it today?'
+
+  nat-tool-calling:
+    <<: *nat-common
+    volumes:
+      - ./workflow-tool-calling.yml:/app/workflows/workflow.yml:ro
+    command:
+      - 'run'
+      - '--config_file'
+      - '/app/workflows/workflow.yml'
+      - '--input'
+      - 'Who is the current CEO of NVIDIA, and what date is it today?'
