@@ -24,7 +24,7 @@ services:
       - '--config_file'
       - '/app/workflows/workflow.yml'
       - '--input'
-      - 'Who is the current CEO of NVIDIA, and what date is it today?'
+      - 'Who founded NVIDIA?'
 
   nat-tool-calling:
     <<: *nat-common
@@ -35,4 +35,4 @@ services:
       - '--config_file'
       - '/app/workflows/workflow.yml'
       - '--input'
-      - 'Who is the current CEO of NVIDIA, and what date is it today?'
+      - 'Who founded NVIDIA?'

@@ -10,8 +10,6 @@ llms:
     max_tokens: 512
 
 functions:
-  current_datetime:
-    _type: current_datetime
   wikipedia_search:
     _type: wiki_search
     max_results: 2
@@ -19,7 +17,6 @@ functions:
 workflow:
   _type: tool_calling_agent
   tool_names:
-    - current_datetime
     - wikipedia_search
   llm_name: nim_llm
   verbose: true
