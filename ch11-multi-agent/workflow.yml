@@ -1,0 +1,55 @@
+general:
+  use_uvloop: true
+
+llms:
+  nim_llm:
+    _type: nim
+    model_name: meta/llama-3.1-8b-instruct
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+embedders:
+  nim_embed:
+    _type: nim
+    model_name: nvidia/nv-embedqa-e5-v5
+    api_key: ${NGC_API_KEY}
+
+retrievers:
+  nat_docs_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 3
+    description: Search the NVIDIA NeMo Agent Toolkit documentation.
+
+functions:
+  # NAT docs RAG 検索（ツール）
+  search_nat_docs:
+    _type: nat_retriever
+    retriever: nat_docs_retriever
+    topic: >
+      Official documentation of NVIDIA NeMo Agent Toolkit (NAT).
+      Use this tool for questions about NAT features, YAML configuration,
+      MCP / A2A servers, evaluators, retrievers, and other NVIDIA agent components.
+
+  # Wikipedia 検索（ツール）
+  wiki_lookup:
+    _type: wiki_search
+    max_results: 2
+
+  # 日時ヘルパー
+  current_datetime:
+    _type: current_datetime
+
+# Router agent をワークフロー本体として動かし、質問を 3 つの branch に振り分ける.
+# NAT 1.6.0 時点の router_agent は Sub-ReAct agent を直接 branches に入れると
+# ChatRequest スキーマ不一致で落ちるため、tool / retriever 単位で振り分ける構成にする.
+workflow:
+  _type: router_agent
+  llm_name: nim_llm
+  branches: [search_nat_docs, wiki_lookup, current_datetime]
+  detailed_logs: true
+  max_router_retries: 3
