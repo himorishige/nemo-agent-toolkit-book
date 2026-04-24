@@ -1,0 +1,20 @@
+{"id": "g01", "question": "Which Python versions does NeMo Agent Toolkit officially support?", "answer": "Python 3.11, 3.12, or 3.13.", "category": "get-started"}
+{"id": "g02", "question": "Which pip command installs the core NeMo Agent Toolkit package from PyPI?", "answer": "pip install nvidia-nat", "category": "get-started"}
+{"id": "g03", "question": "What CLI command runs a NeMo Agent Toolkit workflow using the console front end?", "answer": "nat run", "category": "get-started"}
+{"id": "g04", "question": "Which optional extras flag installs LangChain integration for NeMo Agent Toolkit?", "answer": "[langchain]", "category": "get-started"}
+{"id": "b01", "question": "What are the four main top-level sections of a NeMo Agent Toolkit workflow YAML configuration file?", "answer": "general, llms, functions, and workflow.", "category": "build-workflows"}
+{"id": "b02", "question": "Inside the llms section of a NAT workflow, which field specifies the model identifier used with a provider?", "answer": "model_name", "category": "build-workflows"}
+{"id": "b03", "question": "Which workflow section field references a configured LLM by its name?", "answer": "llm_name", "category": "build-workflows"}
+{"id": "b04", "question": "What environment variable syntax does a NAT YAML file use to inject secrets like API keys?", "answer": "${VAR_NAME} style environment variable expansion.", "category": "build-workflows"}
+{"id": "r01", "question": "Which NAT CLI subcommand starts an MCP server that exposes a workflow as an MCP tool?", "answer": "nat mcp serve", "category": "run-workflows"}
+{"id": "r02", "question": "What default TCP port does the NAT MCP server bind to?", "answer": "9901", "category": "run-workflows"}
+{"id": "r03", "question": "Which CLI command launches a NAT workflow as an A2A server?", "answer": "nat a2a serve", "category": "run-workflows"}
+{"id": "r04", "question": "At what URL path does a NAT A2A server publish its Agent Card?", "answer": "/.well-known/agent-card.json", "category": "run-workflows"}
+{"id": "i01", "question": "What is the purpose of the nat eval CLI subcommand?", "answer": "Evaluate a workflow with the specified dataset using configured evaluators.", "category": "improve-workflows"}
+{"id": "i02", "question": "Which built-in NAT evaluator type scores the full agent trajectory (thoughts, actions, observations)?", "answer": "trajectory", "category": "improve-workflows"}
+{"id": "i03", "question": "Which NAT evaluator type uses RAGAS-style metrics such as answer accuracy?", "answer": "ragas", "category": "improve-workflows"}
+{"id": "i04", "question": "What does the NAT optimizer feature aim to improve automatically in a workflow?", "answer": "It optimizes prompts and workflow parameters to improve agent performance.", "category": "improve-workflows"}
+{"id": "c01", "question": "Which two retriever types are built into the core nvidia-nat package?", "answer": "milvus_retriever and nemo_retriever.", "category": "components"}
+{"id": "c02", "question": "Which embedder _type value targets NVIDIA NIM embedding endpoints?", "answer": "nim", "category": "components"}
+{"id": "c03", "question": "Which NAT function type wraps a configured retriever as a ReAct tool?", "answer": "nat_retriever", "category": "components"}
+{"id": "c04", "question": "Which YAML section declares embedders in a NAT workflow configuration?", "answer": "embedders", "category": "components"}

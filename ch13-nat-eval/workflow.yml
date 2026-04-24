@@ -1,0 +1,75 @@
+general:
+  use_uvloop: true
+
+llms:
+  # 被評価モデル: 軽量な Nemotron Mini 4B
+  workflow_llm:
+    _type: nim
+    model_name: nvidia/nemotron-mini-4b-instruct
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 512
+
+  # 採点役: 強い Nemotron Super 49B
+  judge_llm:
+    _type: nim
+    model_name: nvidia/llama-3.3-nemotron-super-49b-v1
+    api_key: ${NGC_API_KEY}
+    temperature: 0.0
+    max_tokens: 1024
+
+embedders:
+  nim_embed:
+    _type: nim
+    model_name: nvidia/nv-embedqa-e5-v5
+    api_key: ${NGC_API_KEY}
+
+retrievers:
+  nat_docs_retriever:
+    _type: milvus_retriever
+    uri: http://milvus:19530
+    collection_name: nat_docs
+    embedding_model: nim_embed
+    content_field: text
+    top_k: 3
+    description: Search the NVIDIA NeMo Agent Toolkit documentation.
+
+functions:
+  search_nat_docs:
+    _type: nat_retriever
+    retriever: nat_docs_retriever
+    topic: 'NeMo Agent Toolkit 公式ドキュメント'
+
+workflow:
+  _type: react_agent
+  llm_name: workflow_llm
+  tool_names: [search_nat_docs]
+  verbose: false
+  max_iterations: 6
+  parse_agent_response_max_retries: 5
+
+# nat eval --config_file ... で発火する評価セクション.
+# workflow を 20 問のデータセットに対して順次実行し、judge_llm が 3 種類の evaluator で採点する.
+eval:
+  general:
+    output:
+      # NAT は eval 開始時に output.dir を rmtree するため、
+      # compose マウントポイント (/app/outputs) 直下ではなく subdir を指定する
+      dir: /app/outputs/run
+    dataset:
+      _type: jsonl
+      file_path: /app/dataset/nat-qa-20.jsonl
+      structure:
+        question_key: question
+        answer_key: answer
+
+  evaluators:
+    # ReAct の軌跡（Thought / Action / Observation の流れ）を採点
+    trajectory_eval:
+      _type: trajectory
+      llm_name: judge_llm
+
+    # LLM 不要の完全一致（ファクト問題の正誤をそのまま測る）
+    exact_match:
+      _type: langsmith
+      evaluator: exact_match
