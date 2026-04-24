@@ -1,0 +1,26 @@
+[project]
+name = "nemo-agent-toolkit-book"
+version = "0.1.0"
+description = "Sample code for Zenn Book: NeMo Agent Toolkit Cloud NIM + Docker ハンズオン"
+requires-python = ">=3.12"
+
+[tool.ruff]
+# Python コードは主に第 11 章以降の独自ツール実装で登場する想定
+# NAT 本体のベースイメージ（docker/nat/Dockerfile）は python:3.12-slim
+target-version = "py312"
+line-length = 100
+extend-exclude = [
+    "docker/nat/",  # コンテナ内で pip install されるだけで lint 対象外
+]
+
+[tool.ruff.lint]
+# E, W: pycodestyle / F: pyflakes / I: isort / UP: pyupgrade
+# B: flake8-bugbear / SIM: flake8-simplify / RUF: Ruff 固有
+select = ["E", "W", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = [
+    "E501",  # line too long (formatter が整形してくれるのに任せる)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

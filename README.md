@@ -56,6 +56,23 @@ docker compose run --rm nat
 
 NAT 1.7 以降で動作が変わる箇所は各章の README に差分メモを追記します。
 
+## Python コードの lint / format
+
+本書で Python コードが登場する章（主に第 11 章以降の独自ツール実装）向けに、リポジトリルートの `pyproject.toml` で ruff の設定を管理しています。
+
+```bash
+# lint
+uvx ruff check .
+
+# format（書き換え）
+uvx ruff format .
+
+# format 確認のみ（CI 向け）
+uvx ruff format --check .
+```
+
+`uvx` は [uv](https://github.com/astral-sh/uv) のツールランナーで、Python 環境を汚さずに ruff を実行できます。`pip install ruff` で手元に入れて `ruff check .` でも同じことができます。
+
 ## License
 
 Apache License 2.0。詳細は [LICENSE](./LICENSE) を参照してください。

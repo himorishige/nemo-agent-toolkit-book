@@ -32,3 +32,7 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+
+# ruff
+.ruff_cache/
