@@ -11,11 +11,11 @@ cp .env.example .env
 docker compose run --rm nat
 ```
 
-NGC API key と NIM クラウド（build.nvidia.com）の疎通が通っていれば、ReAct ループが 1 周回って今日の日付を答えます。
+NGC API key と NIM（build.nvidia.com）の疎通が通っていれば、ReAct ループが 1 周回って今日の日付を答えます。
 
 ## ファイル構成
 
-- `workflow.yml` — NAT の設定ファイル（`_type: nim` で Llama 3.1 8B を叩く）
+- `workflow.yml` — NAT の設定ファイル（`_type: nim` で Nemotron Super 49B を叩く）
 - `docker-compose.yml` — `nat-nim-handson:1.6.0` イメージを起動、`What is today's date?` を入力
 - `.env.example` — NGC API key 記入用
 

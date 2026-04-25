@@ -1,4 +1,4 @@
-# 第 11 章 マルチエージェント①：Router で振り分ける
+# 第 11 章 マルチエージェント 1：Router で振り分ける
 
 NAT 1.6.0 の `router_agent` を使い、3 種類の tool に質問を振り分けるマルチエージェント構成です。
 
@@ -39,4 +39,4 @@ NAT 1.6.0 の router_agent は、サブエージェント（react_agent）を直
 `ChatRequestOrMessage` のスキーマ不一致で失敗します。本章では **tool / retriever 単位**で
 branches を構成する形を採用しました。エージェント間通信は次章（A2A プロトコル）で扱います。
 
-詳細は Zenn Book [第 11 章「マルチエージェント①：Router で振り分ける」](https://zenn.dev/himorishige/books/nemo-agent-toolkit-nim-handson) を参照してください。
+詳細は Zenn Book [第 11 章「マルチエージェント 1：Router で振り分ける」](https://zenn.dev/himorishige/books/nemo-agent-toolkit-nim-handson) を参照してください。

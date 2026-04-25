@@ -1,4 +1,4 @@
-# 第 12 章 マルチエージェント②：A2A プロトコル
+# 第 12 章 マルチエージェント 2：A2A プロトコル
 
 docker compose で 2 つの NAT プロセスを立て、一方を A2A サーバー・もう一方を A2A クライアントにしてエージェント間通信を見せます。
 
@@ -35,4 +35,4 @@ docker compose down
 NAT 1.6.0 の `a2a_client` は per-user function group なので、workflow 側も `per_user_react_agent` を
 使う必要があります。通常の `react_agent` では tool_names に A2A client を入れられません。
 
-詳細は Zenn Book [第 12 章「マルチエージェント②：A2A プロトコル」](https://zenn.dev/himorishige/books/nemo-agent-toolkit-nim-handson) を参照してください。
+詳細は Zenn Book [第 12 章「マルチエージェント 2：A2A プロトコル」](https://zenn.dev/himorishige/books/nemo-agent-toolkit-nim-handson) を参照してください。
