@@ -29,8 +29,8 @@ def draw_title(draw: ImageDraw.ImageDraw) -> None:
     "NeMo Agent Toolkit" は 1 行に収まる最大サイズで強調.
     """
     title_lines = [
-        ("クラウド NIM +", 36),
-        ("Docker ではじめる", 36),
+        ("NIM + Docker", 40),
+        ("ではじめる", 36),
         ("NeMo Agent Toolkit", 40),
         ("ハンズオン", 36),
     ]
