@@ -24,26 +24,26 @@ FONT_PATH = "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc"
 
 
 def draw_title(draw: ImageDraw.ImageDraw) -> None:
-    """タイトルを 4 行に分けて中央配置."""
+    """タイトルを 4 行に分けて中央配置.
+
+    "NeMo Agent Toolkit" は 1 行に収まる最大サイズで強調.
+    """
     title_lines = [
-        ("クラウド NIM +", 38),
-        ("Docker ではじめる", 38),
-        ("NeMo Agent", 44),
-        ("Toolkit ハンズオン", 38),
+        ("クラウド NIM +", 36),
+        ("Docker ではじめる", 36),
+        ("NeMo Agent Toolkit", 40),
+        ("ハンズオン", 36),
     ]
 
-    # 各行を順に縦並び（中央に来るよう total height を計算してから配置）
     fonts = [ImageFont.truetype(FONT_PATH, size=size, index=2) for _, size in title_lines]
     line_heights = []
     for line, font in zip(title_lines, fonts, strict=True):
         bbox = font.getbbox(line[0])
         line_heights.append(bbox[3] - bbox[1])
 
-    # 行間
-    line_gap = 22
+    line_gap = 24
     total_height = sum(line_heights) + line_gap * (len(title_lines) - 1)
 
-    # 縦中央 + 少し上に寄せる（下部にアクセントスペース）
     y = (HEIGHT - total_height) // 2 - 30
 
     for (text, _), font, h in zip(title_lines, fonts, line_heights, strict=True):
