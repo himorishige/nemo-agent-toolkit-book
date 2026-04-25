@@ -3,6 +3,12 @@
 NVIDIA ダーク (#0F1112) を基調に、エージェントネットワーク風の
 ノード＆エッジを背景に配置し、タイトルを階層的に組む.
 出力サイズは Zenn 公式推奨の 500x700.
+
+Usage:
+    uv run --group tools python scripts/generate_cover.py
+
+Pillow は dependency-groups の "tools" に登録されている.
+レイアウトのバリエーションを試す場合は GRAPH_SEED を変える.
 """
 
 from __future__ import annotations

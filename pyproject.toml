@@ -27,3 +27,8 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[dependency-groups]
+tools = [
+    "pillow>=12.2.0",
+]
