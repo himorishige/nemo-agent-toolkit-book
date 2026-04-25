@@ -22,7 +22,7 @@ docker compose --profile client run --rm nat-client \
 
 ## Claude Desktop から接続する
 
-macOS / Windows 側の Claude Desktop から DGX Spark（Tailscale IP）の MCP サーバーに接続する設定例は Zenn Book 第 8 章を参照してください。
+macOS / Windows 側の Claude Desktop から、手元のマシン（`localhost`、LAN IP、Tailscale などの remote IP のいずれでも可）で動かしている MCP サーバーに接続する設定例は Zenn Book 第 8 章を参照してください。
 
 ## ファイル構成
 
